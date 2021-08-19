@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JogadoresModule } from './jogadores/jogadores.module';
-import { CategoriasController } from './categorias/categorias.controller';
-import { CategoriasService } from './categorias/categorias.service';
 import { CategoriasModule } from './categorias/categorias.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb://root:root@localhost:27017/node?authSource=admin&authMechanism=SCRAM-SHA-1',
+      'mongodb+srv://root:t1f1A*bo80@nodejs.gvhvz.mongodb.net/node-api?retryWrites=true&w=majority',
       {
         useNewUrlParser: true,
         useCreateIndex: true,
