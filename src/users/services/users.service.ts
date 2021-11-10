@@ -27,4 +27,10 @@ export class UsersService {
     newUser.password = await bcrypt.hash(password.valueOf(), 10);
     return newUser.save();
   }
+
+  async findById(_id: String): Promise<User> {
+    const user = await this.userModel.findById(_id).exec();
+    if (!user) throw new BadRequestException(`User ${_id} não encontrado!`);
+    return user;
+  }
 }
