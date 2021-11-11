@@ -2,8 +2,9 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from '../dtos/createUser.dto';
-import { User } from '../interface/user.interface';
+import { Role, User } from '../interface/user.interface';
 import * as bcrypt from 'bcrypt';
+import { Roles } from '../roles/roles.decorator';
 
 @Injectable()
 export class UsersService {
@@ -29,8 +30,13 @@ export class UsersService {
   }
 
   async findById(_id: String): Promise<User> {
-    const user = await this.userModel.findById(_id).exec();
+    const user = await this.userModel.findOne({ _id: _id }).exec();
     if (!user) throw new BadRequestException(`User ${_id} não encontrado!`);
     return user;
   }
+
+  // async findRoles(): Promise<Array<String>> {
+  //   const roles = Role;
+  //   return roles;
+  // }
 }

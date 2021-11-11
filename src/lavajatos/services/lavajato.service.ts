@@ -40,4 +40,11 @@ export class LavaJatoService {
     this.logger.log(lavajato);
     return await lavajato.save();
   }
+
+  async findLavaJatos(id: String): Promise<LavaJato> {
+    this.logger.log(`Finding LavaJatos`);
+    const user = await this.usersService.findById(id);
+    if (!user) throw new Error('User not found');
+    return this.lavajatoModel.findOne({ user: user._id }).exec();
+  }
 }

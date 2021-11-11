@@ -8,7 +8,7 @@ export interface User extends Document {
 }
 
 export enum Role {
-  Common = 'common',
-  Company = 'company',
+  Common = 'comum',
+  Company = 'empresa',
   Admin = 'admin',
 }

@@ -1,6 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
+  Logger,
+  Param,
   Post,
   UseGuards,
   UsePipes,
@@ -13,19 +16,36 @@ import { LavaJatoService } from './services/lavajato.service';
 
 @Controller('lavajato/create')
 export class LavaJatoController {
+  private logger = new Logger(LavaJatoController.name);
+
   constructor(private readonly lavaJatoService: LavaJatoService) {}
 
   @Post()
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
   async createLavaJato(
-    @Body() createLavaJato: CreateLavaJatoDto,
+    @Body() createLavaJatoDto: CreateLavaJatoDto,
   ): Promise<LavaJato> {
-    return await this.lavaJatoService.createLavaJato(createLavaJato);
+    this.logger.log(
+      `Start - LavaJatoController.createLavaJato - ${JSON.stringify(
+        createLavaJatoDto,
+      )}`,
+    );
+    return await this.lavaJatoService.createLavaJato(createLavaJatoDto);
   }
 
   @Post('/service')
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
   async createLavaJatoService() {}
+
+  @Get('/:id')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  async findLavaJato(@Param('id') id: String): Promise<LavaJato> {
+    this.logger.log(
+      `Start - LavaJatoController.findLavaJato - User_Id - ${id}`,
+    );
+    return await this.lavaJatoService.findLavaJatos(id);
+  }
 }
