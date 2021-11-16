@@ -7,7 +7,7 @@ import { LavajatosModule } from './lavajatos/lavajatos.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
-      'mongodb+srv://root:t1f1A*bo80@gerenciador-api.gvhvz.mongodb.net/api-car?retryWrites=true&w=majority',
+      'mongodb+srv://root:t1f1A*bo59@gerenciador-api.gvhvz.mongodb.net/api-car?retryWrites=true&w=majority',
       {
         useNewUrlParser: true,
         useCreateIndex: true,
