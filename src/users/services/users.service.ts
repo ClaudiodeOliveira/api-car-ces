@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from '../dtos/createUser.dto';
 import { Role, User } from '../interface/user.interface';
 import * as bcrypt from 'bcrypt';
-import { Roles } from '../roles/roles.decorator';
 
 @Injectable()
 export class UsersService {
@@ -19,14 +18,16 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password } = createUserDto;
+    const { username, password, role } = createUserDto;
     const user = await this.userModel.findOne({ username }).exec();
     if (user)
       throw new BadRequestException(`O usuario ${username} já foi cadastrado`);
 
+    
     const newUser = new this.userModel(createUserDto);
     newUser.password = await bcrypt.hash(password.valueOf(), 10);
-    return newUser.save();
+    newUser.role = role == Role.Common ? Role.Common : Role.Company;
+    return await newUser.save();
   }
 
   async findById(_id: String): Promise<User> {
