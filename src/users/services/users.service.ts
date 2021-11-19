@@ -18,12 +18,15 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password, role } = createUserDto;
-    const user = await this.userModel.findOne({ username }).exec();
+    const { username, password, role, email } = createUserDto;
+    this.logger.log(`Creating user ${email}`);
+    const user = await this.userModel.findOne({ email }).exec();
+    this.logger.log(user);
     if (user)
-      throw new BadRequestException(`O usuario ${username} já foi cadastrado`);
+      throw new BadRequestException(
+        `O E-mail ${email} já foi cadastrado, tente outro!`,
+      );
 
-    
     const newUser = new this.userModel(createUserDto);
     newUser.password = await bcrypt.hash(password.valueOf(), 10);
     newUser.role = role == Role.Common ? Role.Common : Role.Company;

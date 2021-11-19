@@ -13,8 +13,8 @@ export class AuthService {
   private logger = new Logger(AuthService.name);
 
   async validateUser(email: String, pass: string): Promise<User> {
+    this.logger.log(`Start - AuthService.validateUser - email - ${email}`);
     const user = await this.usersService.findOne(email);
-    this.logger.log(user);
     if (user && bcrypt.compareSync(pass, user.password.valueOf())) {
       const { password, ...result } = user;
       return user;

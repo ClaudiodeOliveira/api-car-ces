@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { UsersService } from 'src/users/services/users.service';
 import { CreateLavaJatoDto } from '../dtos/createLavaJato.dto';
 import { LavaJatoDto } from '../dtos/lavaJato.dto copy';
+import { UpdateLavaJatoDto } from '../dtos/updateLavaJato.dto';
 import { LavaJato } from '../interfaces/lavajato.interface';
 
 @Injectable()
@@ -46,5 +47,21 @@ export class LavaJatoService {
     const user = await this.usersService.findById(id);
     if (!user) throw new Error('User not found');
     return this.lavajatoModel.findOne({ user: user._id }).exec();
+  }
+
+  async findAllLavaJatos(): Promise<Array<LavaJato>> {
+    this.logger.log(`Finding all LavaJatos`);
+    return await this.lavajatoModel.find().exec();
+  }
+
+  async updateLavaJatoService(
+    updateLavaJatoDto: UpdateLavaJatoDto,
+  ): Promise<void> {
+    this.logger.log(`Updating LavaJato`);
+    const { _id, description, price } = updateLavaJatoDto;
+    const lavaJato = await this.lavajatoModel.findOne({ _id }).exec();
+    if (!lavaJato) throw new Error('LavaJato not found');
+    lavaJato.services.push({ description, price });
+    await this.lavajatoModel.updateOne({ _id }, lavaJato).exec();
   }
 }
