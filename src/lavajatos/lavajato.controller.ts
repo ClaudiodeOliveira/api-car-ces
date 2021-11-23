@@ -36,10 +36,18 @@ export class LavaJatoController {
     return await this.lavaJatoService.createLavaJato(createLavaJatoDto);
   }
 
-  @Put('/service')
+  @Post('/service')
   @UsePipes(ValidationPipe)
   @UseGuards(JwtAuthGuard)
   async createLavaJatoService(@Body() updateLavaJatoDto: UpdateLavaJatoDto) {
+    this.logger.log(`Update Lava_Jato ${updateLavaJatoDto} `);
+    return await this.lavaJatoService.createLavaJatoService(updateLavaJatoDto);
+  }
+
+  @Put('/service')
+  @UsePipes(ValidationPipe)
+  @UseGuards(JwtAuthGuard)
+  async updateLavaJatoService(@Body() updateLavaJatoDto: UpdateLavaJatoDto) {
     this.logger.log(`Update Lava_Jato ${updateLavaJatoDto} `);
     return await this.lavaJatoService.updateLavaJatoService(updateLavaJatoDto);
   }

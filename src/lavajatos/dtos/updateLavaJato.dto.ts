@@ -6,6 +6,9 @@ export class UpdateLavaJatoDto {
   readonly _id: String;
   @IsNotEmpty()
   @IsString()
+  readonly id_service: String;
+  @IsNotEmpty()
+  @IsString()
   readonly description: String;
   @IsNotEmpty()
   @IsNumber()

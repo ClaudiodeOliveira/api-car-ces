@@ -54,14 +54,31 @@ export class LavaJatoService {
     return await this.lavajatoModel.find().exec();
   }
 
-  async updateLavaJatoService(
+  async createLavaJatoService(
     updateLavaJatoDto: UpdateLavaJatoDto,
   ): Promise<void> {
-    this.logger.log(`Updating LavaJato`);
+    this.logger.log(`Create LavaJato Service`);
     const { _id, description, price } = updateLavaJatoDto;
     const lavaJato = await this.lavajatoModel.findOne({ _id }).exec();
     if (!lavaJato) throw new Error('LavaJato not found');
     lavaJato.services.push({ description, price });
+    await this.lavajatoModel.updateOne({ _id }, lavaJato).exec();
+  }
+
+  async updateLavaJatoService(updateLavaJatoDto: UpdateLavaJatoDto) {
+    this.logger.log(`Updating LavaJato`);
+    const { _id, description, price, id_service } = updateLavaJatoDto;
+    const lavaJato = await this.lavajatoModel.findOne({ _id }).exec();
+    if (!lavaJato) throw new Error('LavaJato not found');
+
+    lavaJato.services.find((ser) => {
+      let { _id } = JSON.parse(JSON.stringify(ser));
+      if (_id === id_service) {
+        ser.description = description;
+        ser.price = price;
+      }
+    });
+
     await this.lavajatoModel.updateOne({ _id }, lavaJato).exec();
   }
 }
