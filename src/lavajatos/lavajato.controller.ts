@@ -77,6 +77,13 @@ export class LavaJatoController {
 
   @Delete('/:id')
   @UseGuards(JwtAuthGuard)
+  async deleteLavaJato(@Param('id') id: String): Promise<void> {
+    this.logger.log(`Start - LavaJatoController.deleteLavaJato - ${id}`);
+    await this.lavaJatoService.deleteLavaJato(id);
+  }
+
+  @Delete('/service/:id')
+  @UseGuards(JwtAuthGuard)
   async deleteLavaJatoService(@Param('id') id: String): Promise<void> {
     this.logger.log(`Start - LavaJatoController.deleteLavaJatoService - ${id}`);
     await this.lavaJatoService.deleteLavaJatoService(id);
