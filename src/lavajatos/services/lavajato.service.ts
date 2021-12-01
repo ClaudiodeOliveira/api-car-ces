@@ -96,6 +96,15 @@ export class LavaJatoService {
 
   async deleteLavaJatoService(id: String): Promise<void> {
     this.logger.log(`Deleting LavaJato Service`);
-    await this.lavajatoModel.findOneAndDelete({ 'service._id': id }).exec();
+    const lavaJato = await this.lavajatoModel
+      .findOne({ 'services._id': id })
+      .exec();
+    lavaJato.services.find((ser) => {
+      let { _id } = JSON.parse(JSON.stringify(ser));
+      if (_id === id) {
+        lavaJato.services.splice(lavaJato.services.indexOf(ser), 1);
+      }
+    });
+    lavaJato.save();
   }
 }
