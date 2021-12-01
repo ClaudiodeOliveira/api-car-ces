@@ -24,7 +24,6 @@ export class LavaJatoService {
     }
     const { name, street, number, city, state, complement, zipcode, lat, lng } =
       createLavaJato;
-
     const lavaJatoDto = new LavaJatoDto();
     lavaJatoDto.name = name;
     lavaJatoDto.user = user;
