@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/services/users.service';
 import { CreateLavaJatoDto } from '../dtos/createLavaJato.dto';
+import { CreateLavaJatoServiceDto } from '../dtos/createLavaJatoService.dto';
 import { LavaJatoDto } from '../dtos/lavaJato.dto copy';
 import { UpdateLavaJatoDto } from '../dtos/updateLavaJato.dto';
 import { LavaJato } from '../interfaces/lavajato.interface';
@@ -21,8 +22,9 @@ export class LavaJatoService {
     if (!user) {
       throw new Error('User not found');
     }
-    const { name, street, number, city, state, complement, zipcode } =
+    const { name, street, number, city, state, complement, zipcode, lat, lng } =
       createLavaJato;
+
     const lavaJatoDto = new LavaJatoDto();
     lavaJatoDto.name = name;
     lavaJatoDto.user = user;
@@ -33,6 +35,8 @@ export class LavaJatoService {
       state,
       complement,
       zipcode,
+      lat,
+      lng,
     };
 
     this.logger.log(lavaJatoDto.name);
@@ -55,10 +59,11 @@ export class LavaJatoService {
   }
 
   async createLavaJatoService(
-    updateLavaJatoDto: UpdateLavaJatoDto,
+    createLavaJatoServiceDto: CreateLavaJatoServiceDto,
   ): Promise<void> {
     this.logger.log(`Create LavaJato Service`);
-    const { _id, description, price } = updateLavaJatoDto;
+    const { _id, description, price } = createLavaJatoServiceDto;
+    this.logger.log(`id: ${_id}`);
     const lavaJato = await this.lavajatoModel.findOne({ _id }).exec();
     if (!lavaJato) throw new Error('LavaJato not found');
     lavaJato.services.push({ description, price });
@@ -67,10 +72,12 @@ export class LavaJatoService {
 
   async updateLavaJatoService(updateLavaJatoDto: UpdateLavaJatoDto) {
     this.logger.log(`Updating LavaJato`);
-    const { _id, description, price, id_service } = updateLavaJatoDto;
-    const lavaJato = await this.lavajatoModel.findOne({ _id }).exec();
+    const { description, price, id_service } = updateLavaJatoDto;
+    const lavaJato = await this.lavajatoModel
+      .findOne({ 'services._id': id_service })
+      .exec();
     if (!lavaJato) throw new Error('LavaJato not found');
-
+    const { _id } = lavaJato;
     lavaJato.services.find((ser) => {
       let { _id } = JSON.parse(JSON.stringify(ser));
       if (_id === id_service) {
@@ -80,5 +87,10 @@ export class LavaJatoService {
     });
 
     await this.lavajatoModel.updateOne({ _id }, lavaJato).exec();
+  }
+
+  async deleteLavaJatoService(id: String): Promise<void> {
+    this.logger.log(`Deleting LavaJato`);
+    await this.lavajatoModel.findOneAndDelete({ _id: id }).exec();
   }
 }

@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class UpdateLavaJatoDto {
+export class CreateLavaJatoServiceDto {
   @IsNotEmpty()
   @IsString()
-  readonly id_service: String;
+  readonly _id: String;
   @IsNotEmpty()
   @IsString()
   readonly description: String;

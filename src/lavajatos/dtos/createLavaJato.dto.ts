@@ -22,7 +22,10 @@ export class CreateLavaJatoDto {
   @IsNotEmpty()
   @IsString()
   readonly street: String;
-  @IsNotEmpty()
   @IsString()
   readonly complement: String;
+  @IsString()
+  readonly lat: String;
+  @IsString()
+  readonly lng: String;
 }

@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from 'src/users/users.module';
@@ -9,6 +10,7 @@ import { LavaJatoService } from './services/lavajato.service';
   imports: [
     MongooseModule.forFeature([{ name: 'LavaJato', schema: LavaJatoSchema }]),
     UsersModule,
+    HttpModule,
   ],
   controllers: [LavaJatoController],
   providers: [LavaJatoService],

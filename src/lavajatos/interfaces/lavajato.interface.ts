@@ -20,4 +20,6 @@ export interface Address {
   city: String;
   state: String;
   zipcode: String;
+  lat: String;
+  lng: String;
 }

@@ -17,6 +17,8 @@ export const LavaJatoSchema = new mongoose.Schema(
       city: { type: String, required: false },
       state: { type: String, required: false },
       zipCode: { type: String, required: false },
+      lat: { type: String, required: false },
+      lng: { type: String, required: false },
     },
   },
   { timestamps: true, collection: 'lavajato' },
